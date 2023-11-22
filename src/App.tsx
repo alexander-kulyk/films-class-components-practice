@@ -1,26 +1,23 @@
+//core
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+//components
+import { Layout } from './components';
+import { StarWars, TrendingMovies } from './pages';
+//other
+import { ROUTES } from './constants';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Routes>
+        <Route path={ROUTES.HOME} element={<Layout />}>
+          <Route index element={<StarWars />} />
+          <Route path={ROUTES.TRENDING} element={<TrendingMovies />} />
+        </Route>
+      </Routes>
+    );
+  }
 }
 
 export default App;
