@@ -14,7 +14,7 @@ export class Layout extends Component {
         <div className={style.nav_wrapper}>
           <S.StyledLink to={ROUTES.HOME}>{SETTINGS.PAGES.HOME} </S.StyledLink>
           <S.StyledLink to={ROUTES.TRENDING}>
-            {SETTINGS.PAGES.TRENDING_MOVIES}{' '}
+            {SETTINGS.PAGES.TRENDING_MOVIES}
           </S.StyledLink>
         </div>
         <Outlet />
