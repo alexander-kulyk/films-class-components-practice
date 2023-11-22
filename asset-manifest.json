@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/films-class-components-practice/static/css/main.81ff078a.css",
+    "main.js": "/films-class-components-practice/static/js/main.ae0fbe37.js",
+    "static/js/787.fa9cb370.chunk.js": "/films-class-components-practice/static/js/787.fa9cb370.chunk.js",
+    "static/media/deth_star.webp": "/films-class-components-practice/static/media/deth_star.639ef86ec1a1ccf6862d.webp",
+    "index.html": "/films-class-components-practice/index.html",
+    "main.81ff078a.css.map": "/films-class-components-practice/static/css/main.81ff078a.css.map",
+    "main.ae0fbe37.js.map": "/films-class-components-practice/static/js/main.ae0fbe37.js.map",
+    "787.fa9cb370.chunk.js.map": "/films-class-components-practice/static/js/787.fa9cb370.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.81ff078a.css",
+    "static/js/main.ae0fbe37.js"
+  ]
+}
