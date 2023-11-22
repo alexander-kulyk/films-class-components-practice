@@ -13,8 +13,8 @@ interface IState {
   page: number;
 }
 
-export class StarWars extends React.Component {
-  state: IState = {
+export class StarWars extends React.Component<{}, IState> {
+  state = {
     starWarsMovies: [],
     isOpenModal: false,
     movieDetails: null,
@@ -22,20 +22,21 @@ export class StarWars extends React.Component {
   };
 
   getNextPage = async () => {
-    this.setState((prevState) =>
-      /* @ts-ignore */
-      ({ page: prevState.page + 1 })
-    );
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
 
     const starWarsMoviesList: IMovie[] | undefined = await fetchStarWars(
       this.state.page
     );
-    this.setState({ starWarsMovies: starWarsMoviesList });
+    if (starWarsMoviesList) {
+      this.setState({ starWarsMovies: starWarsMoviesList });
+    }
   };
 
   getMovieDetails = async (movieId: number) => {
     const movieDetails = await fetchMovieDetail(movieId);
-    this.setState({ isOpenModal: true, movieDetails });
+    if (movieDetails) {
+      this.setState({ isOpenModal: true, movieDetails });
+    }
   };
 
   handleCloseModal = () => {
@@ -46,7 +47,10 @@ export class StarWars extends React.Component {
     const starWarsMoviesList: IMovie[] | undefined = await fetchStarWars(
       this.state.page
     );
-    this.setState({ starWarsMovies: starWarsMoviesList });
+
+    if (starWarsMoviesList) {
+      this.setState({ starWarsMovies: starWarsMoviesList });
+    }
   }
 
   render() {
@@ -56,7 +60,7 @@ export class StarWars extends React.Component {
           moviesList={this.state.starWarsMovies}
           getMovieDetails={this.getMovieDetails}
         />
-        <button onClick={() => this.getNextPage()}>next</button>
+        {/* <button onClick={() => this.getNextPage()}>next</button> */}
         {this.state.isOpenModal && (
           <Modal
             movieDetails={this.state.movieDetails}

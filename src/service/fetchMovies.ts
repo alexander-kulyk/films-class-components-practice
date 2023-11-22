@@ -1,5 +1,5 @@
 import { movies } from '../api';
-import { IMovie, IMoviesResponse } from '../types';
+import { IMovie, IMovieDetails, IMoviesResponse } from '../types';
 
 export const fetchStarWars = async (
   page: number
@@ -23,7 +23,7 @@ export const fetchTrendingMovies = async (): Promise<IMovie[] | undefined> => {
 
 export const fetchMovieDetail = async (id: number | null) => {
   try {
-    const response: IMoviesResponse = (await movies.movieDetails(id)).data;
+    const response: IMovieDetails = (await movies.movieDetails(id)).data;
     return response;
   } catch (e) {
     console.log('e', e);
