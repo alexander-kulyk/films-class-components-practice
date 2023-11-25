@@ -1,41 +1,50 @@
 //core
 import React from 'react';
 //components
-import { MoviesList, Modal } from '../../components';
+import { MoviesList, Modal, Loader, Button } from '../../components';
 //other
 import { fetchStarWars, fetchMovieDetail } from '../../service';
 import { IMovie, IMovieDetails } from '../../types';
+import { COMMON } from '../../constants/common';
 
 interface IState {
   movieDetails: IMovieDetails | null;
   starWarsMovies: IMovie[];
   isOpenModal: boolean;
+  isLoading: boolean;
   page: number;
 }
 
-export class StarWars extends React.Component<{}, IState> {
+class StarWars extends React.Component<{}, IState> {
   state = {
     starWarsMovies: [],
     isOpenModal: false,
     movieDetails: null,
+    isLoading: false,
     page: 1,
   };
 
-  getNextPage = async () => {
-    this.setState((prevState) => ({ page: prevState.page + 1 }));
+  abortController = new AbortController();
 
+  getNextPage = async () => {
+    this.setState((prevState) => ({
+      page: prevState.page + 1,
+      isLoading: true,
+    }));
     const starWarsMoviesList: IMovie[] | undefined = await fetchStarWars(
-      this.state.page
+      this.state.page,
+      this.abortController.signal
     );
     if (starWarsMoviesList) {
-      this.setState({ starWarsMovies: starWarsMoviesList });
+      this.setState({ starWarsMovies: starWarsMoviesList, isLoading: false });
     }
   };
 
   getMovieDetails = async (movieId: number) => {
+    this.setState({ isLoading: true });
     const movieDetails = await fetchMovieDetail(movieId);
     if (movieDetails) {
-      this.setState({ isOpenModal: true, movieDetails });
+      this.setState({ isOpenModal: true, movieDetails, isLoading: false });
     }
   };
 
@@ -43,15 +52,34 @@ export class StarWars extends React.Component<{}, IState> {
     this.setState({ isOpenModal: false });
   };
 
-  async componentDidMount() {
-    const starWarsMoviesList: IMovie[] | undefined = await fetchStarWars(
-      this.state.page
-    );
+  shouldComponentUpdate(nextProps: any, nextState: IState) {
+    if (
+      this.state.starWarsMovies === nextState.starWarsMovies &&
+      this.state.isOpenModal === nextState.isOpenModal &&
+      this.state.movieDetails === nextState.movieDetails &&
+      this.state.page === nextState.page &&
+      this.state.isLoading === nextState.isLoading
+    ) {
+      return false;
+    }
 
+    return true;
+  }
+
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    const starWarsMoviesList: IMovie[] | undefined = await fetchStarWars(
+      this.state.page,
+      this.abortController.signal
+    );
     if (starWarsMoviesList) {
-      this.setState({ starWarsMovies: starWarsMoviesList });
+      this.setState({ starWarsMovies: starWarsMoviesList, isLoading: false });
     }
   }
+
+  // componentWillUnmount(): void {
+  //   this.abortController.abort();
+  // }
 
   render() {
     return (
@@ -60,14 +88,17 @@ export class StarWars extends React.Component<{}, IState> {
           moviesList={this.state.starWarsMovies}
           getMovieDetails={this.getMovieDetails}
         />
-        {/* <button onClick={() => this.getNextPage()}>next</button> */}
+        <Button text={COMMON.NEXT_PAGE} onClick={this.getNextPage} />
         {this.state.isOpenModal && (
           <Modal
             movieDetails={this.state.movieDetails}
             handleCloseModal={this.handleCloseModal}
           />
         )}
+        <Loader isLoading={this.state.isLoading} />
       </>
     );
   }
 }
+
+export default StarWars;

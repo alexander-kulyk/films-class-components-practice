@@ -25,7 +25,7 @@ export class MoviesList extends Component<IProps> {
 
     return (
       <ul className={css.wrapper}>
-        {moviesList.map((item) => (
+        {moviesList?.map((item) => (
           <li
             className={css.list}
             key={item.id}

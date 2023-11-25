@@ -1,3 +1,1 @@
-import { StarWars } from './StarWars';
-
-export { StarWars };
+export { default as StarWars } from './StarWars';

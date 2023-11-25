@@ -2,19 +2,25 @@ import { movies } from '../api';
 import { IMovie, IMovieDetails, IMoviesResponse } from '../types';
 
 export const fetchStarWars = async (
-  page: number
+  page: number,
+  signal?: AbortSignal
 ): Promise<IMovie[] | undefined> => {
   try {
-    const response: IMoviesResponse = (await movies.starWarsMovies(page)).data;
+    const response: IMoviesResponse = (
+      await movies.starWarsMovies(page, signal)
+    ).data;
     return response.results;
   } catch (e) {
     console.log('e', e);
   }
 };
 
-export const fetchTrendingMovies = async (): Promise<IMovie[] | undefined> => {
+export const fetchTrendingMovies = async (
+  signal?: AbortSignal
+): Promise<IMovie[] | undefined> => {
   try {
-    const response: IMoviesResponse = (await movies.trendingMovies()).data;
+    const response: IMoviesResponse = (await movies.trendingMovies(signal))
+      .data;
     return response.results;
   } catch (e) {
     console.log('e', e);
